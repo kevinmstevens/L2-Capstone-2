@@ -42,7 +42,7 @@ public class DriverSelector {
 	}
 
 	public static Driver getSuitableDriver(String customerLocation) {
-		List<List<String>> records = FileReader.reader("resources/drivers.txt");
+		List<List<String>> records = FileReader.reader("resources/driver-info.txt");
 		return getDriverWithSmallestLoad(records, customerLocation);
 	}
 
