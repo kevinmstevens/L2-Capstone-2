@@ -11,10 +11,31 @@ package QuickFood2;
  *so by the time we generate an invoice we will have a suitable driver (or none)
  *added error handling around ParseInt - i got errors when refactoring and this helped me work out the errors
  *
+ *REFACTORING 2: when getSuitableDriver is called, firstly it calls getDriverInfoFilePath to read the properties file and get the path to 'driver-info.txt'.  So if somebody changes the file path in the future, we can update the properties with actually changing and compiling the java code.
  */
 import java.util.List;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class DriverSelector {
+	
+	// new method to read properties file and get the file path
+	private static String getDriverInfoFilePath() {
+		Properties prop = new Properties();
+		try (InputStream input = DriverSelector.class.getClassLoader().getResourceAsStream("config.properties")){
+			if (input == null) {
+				throw new RuntimeException("Sorry, unable to find config.properies file.");
+			}
+			// load a properties file from the class path
+			prop.load(input);
+			
+			//Get the property value and return it
+			return prop.getProperty("driverInfoFilePath");
+		} catch (Exception ex) {
+			throw new RuntimeException("Error reading the config.properties file.", ex);
+		}
+	}
+	
 	public static Driver getDriverWithSmallestLoad(List<List<String>> records, String desiredLocation) {
 		List<String> smallestRecord = null;
 		int smallestValue = Integer.MAX_VALUE;
@@ -42,7 +63,8 @@ public class DriverSelector {
 	}
 
 	public static Driver getSuitableDriver(String customerLocation) {
-		List<List<String>> records = FileReader.reader("resources/driver-info.txt");
+		String filePath = getDriverInfoFilePath(); //using the new method
+		List<List<String>> records = FileReader.reader(filePath);
 		return getDriverWithSmallestLoad(records, customerLocation);
 	}
 
