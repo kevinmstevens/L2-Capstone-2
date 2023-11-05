@@ -11,6 +11,12 @@ package QuickFood2;
  *so by the time we generate an invoice we will have a suitable driver (or none)
  *added error handling around ParseInt - i got errors when refactoring and this helped me work out the errors
  *
+<<<<<<< Updated upstream
+=======
+ *REFACTORING 2: when getSuitableDriver is called, firstly it calls getDriverInfoFilePath to read the properties file and get the path to 'driver-info.txt'.  So if somebody changes the file path in the future, we can update the properties with actually changing and compiling the java code.
+ * references: https://medium.com/@sonaldwivedi/how-to-read-config-properties-file-in-java-6a501dc96b25
+ * https://www.baeldung.com/java-properties
+>>>>>>> Stashed changes
  */
 import java.util.List;
 
